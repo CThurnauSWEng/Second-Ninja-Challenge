@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<head>
+	<title>Ninja Challenge 1</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<style type="text/css">
+		.gameBorder {
+			border: 2px black solid;
+			width: 600px;
+			height: 500px;
+			background-color: white;
+		}
+		.ninjaDown1 {
+			position: absolute;
+			background-image: url("down1.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaDown2 {
+			position: absolute;
+			background-image: url("down2.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaUp1 {
+			position: absolute;
+			background-image: url("top1.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaUp2 {
+			position: absolute;
+			background-image: url("top2.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaLeft1 {
+			position: absolute;
+			background-image: url("left1.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaLeft2 {
+			position: absolute;
+			background-image: url("left2.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaRight1 {
+			position: absolute;
+			background-image: url("right1.png");
+			width:59px; 
+			height:85px;
+		}
+		.ninjaRight2 {
+			position: absolute;
+			background-image: url("right2.png");
+			width:59px; 
+			height:85px;
+		}
+	</style>
+	<div id='background'>
+		<div id='gameBorderDiv'></div>
+		<div id='ninjaDiv'></div>
+	</div>
+<script type="text/javascript">
+	// initialize wall position - would be nice to extract from gameBorder class
+	// draw the walls
+	var rightWallLoc = 600, bottomWallLoc = 500;
+	content = "<div class='gameBorder'></div>";
+	document.getElementById("gameBorderDiv").innerHTML = content;
+	
+	// Set the speed of the character
+	var leftIncr = 10, topIncr = 10;
+
+	// Create variables holding the size of the character
+	var CharWidth = 59, CharHeight = 86;
+
+	// Draw the Ninja in the center of the box initially
+	var leftValue = Math.ceil(rightWallLoc/2)-(CharWidth*0.5);
+	var topValue = Math.ceil(bottomWallLoc/2)- (CharHeight*.5);
+	var walkValue = 1; 
+	var direction = 'Down';
+	var ninjaClass = "ninja"+direction+walkValue;
+
+	drawNinja();
+
+	function drawNinja(){
+		// update the CSS class for the ninja based on the direction and walkValue
+		if (walkValue == 1) {
+			walkValue = 2;
+		}
+		else {
+			walkValue = 1;
+		}
+		ninjaClass = "ninja"+direction+walkValue;
+
+		// redraw the ninja
+		content = "<div class="+ninjaClass+ " style='left:"+leftValue+"px; top:"+topValue+"px'></div>";
+		document.getElementById("ninjaDiv").innerHTML = content;
+	}
+
+    document.onkeydown=function(e){
+        if(e.keyCode == 37) { // LEFT
+			direction = 'Left';
+        	if (leftValue > (CharWidth/4)) {  // Stop a little short of the left side wall
+        		leftValue -= leftIncr;
+        	}
+    	}
+    	else if(e.keyCode == 39){ // RIGHT
+		    direction = 'Right';
+     		if (leftValue < rightWallLoc - CharWidth) { 
+				leftValue += leftIncr;
+     		}
+    	}
+   		else if(e.keyCode == 40){ // DOWN
+		    direction = 'Down';
+     		if (topValue < bottomWallLoc - CharHeight) {
+     			topValue += topIncr;
+     		}
+    	}
+    	else if(e.keyCode == 38){ // UP
+     		direction = 'Up';
+			if (topValue > (CharHeight/4)) {
+     			topValue -= topIncr;
+     		}
+    	}   
+    	drawNinja();
+    }
+
+</script>
+</body>
+</html>
